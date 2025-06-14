@@ -1,0 +1,11 @@
+{
+    "oidc": {
+        "clientId": "message-service",
+        "loginRedirectUri": "http://localhost:8070/callback",
+        "logoutRedirectUri": "http://localhost:8070/logout-callback",
+        "authority": "http://localhost:8040/realms/c-corp",
+        "codeChallengeMethod": "S256",
+        "scope": "openid profile roles",
+        "refreshIntervalInSeconds": 60
+    }
+}

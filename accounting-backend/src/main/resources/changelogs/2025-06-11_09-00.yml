@@ -1,0 +1,29 @@
+databaseChangeLog:
+  - changeSet:
+      id: account-info-backend-initial
+      author: bootify.io
+      changes:
+        - createTable:
+            tableName: account_info
+            columns:
+              - column:
+                  name: id
+                  type: uuid
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: account_entry
+                  type: character varying(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: date_created
+                  type: timestamp
+                  constraints:
+                    nullable: false
+              - column:
+                  name: last_updated
+                  type: timestamp
+                  constraints:
+                    nullable: false

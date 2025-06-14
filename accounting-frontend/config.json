@@ -1,0 +1,11 @@
+{
+    "oidc": {
+        "clientId": "TODO FIXME placeholder",
+        "loginRedirectUri": "http://localhost:8050/callback",
+        "logoutRedirectUri": "http://localhost:8050/logout-callback",
+        "authority": "http://localhost:8040/realms/c-corp",
+        "codeChallengeMethod": "S256",
+        "scope": "openid profile roles",
+        "tokenExpiryTimeSkewInSeconds": 15
+    }
+}

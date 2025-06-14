@@ -1,0 +1,4 @@
+export enum Permission {
+  VIEW_ACCOUNT_INFO = 'VIEW_ACCOUNT_INFO',
+  EDIT_ACCOUNT_INFO = 'EDIT_ACCOUNT_INFO',
+}

@@ -1,0 +1,7 @@
+[versions]
+kotlin-logging = "3.0.5"
+
+
+[libraries]
+kotlin-logging = { module = "io.github.microutils:kotlin-logging-jvm", version.ref = "kotlin-logging" }
+

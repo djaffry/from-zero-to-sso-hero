@@ -1,0 +1,112 @@
+volumes:
+  keycloak-postgres-volume:
+    driver: local
+  text-message-backend-postgres-volume:
+    driver: local
+  account-info-backend-postgres-volume:
+    driver: local
+
+services:
+  #  Keycloak Setup
+  keycloak:
+    image: quay.io/keycloak/keycloak:26.2.5-0@sha256:4883630ef9db14031cde3e60700c9a9a8eaf1b5c24db1589d6a2d43de38ba2a9
+    ports:
+      - "8040:8080"
+    command:
+      - '-Dkeycloak.migration.action=import'
+      - '-Dkeycloak.migration.provider=singleFile'
+      - '-Dkeycloak.migration.file=/tmp/realm.json'
+      - '-Dkeycloak.migration.strategy=IGNORE_EXISTING'
+      - 'start-dev'
+    environment:
+      - KEYCLOAK_ADMIN=kcadmin
+      - KEYCLOAK_ADMIN_PASSWORD=password
+      - KEYCLOAK_IMPORT=/tmp/realm.json
+      - KC_PROXY_HEADERS=forwarded
+      - KC_HTTP_ENABLED=true
+      - KC_HEALTH_ENABLED=true
+      - KC_DB=postgres
+      - KC_DB_URL_HOST=keycloak-postgres
+      - KC_DB_URL_PORT=5432
+      - KC_DB_URL_DATABASE=keycloak
+      - KC_DB_SCHEMA=public
+      - KC_DB_USERNAME=keycloak
+      - KC_DB_PASSWORD=password
+    volumes:
+      - ./keycloak/realm.json:/tmp/realm.json
+    depends_on:
+      - keycloak-postgres
+
+  keycloak-postgres:
+    image: postgres:17@sha256:30a72339ce74f2621f0f82cd983a11ade307ec2e634a7998318e8813a6f6f25c
+    volumes:
+      - keycloak-postgres-volume:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: keycloak
+      POSTGRES_USER: keycloak
+      POSTGRES_PASSWORD: password
+
+  # Text Message Service Setup
+  text-message-frontend:
+    build:
+      context: ./text-message-frontend
+    ports:
+      - "8070:80"
+    depends_on:
+      - text-message-backend
+
+  text-message-backend:
+    build:
+      context: ./text-message-backend
+    ports:
+      - "8071:8071"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://text-message-backend-postgres:5432/text-message-backend
+      - SPRING_DATASOURCE_USERNAME=text-message-backend
+      - SPRING_DATASOURCE_PASSWORD=password
+      - SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI=http://localhost:8040/realms/c-corp
+      - SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_JWK_SET_URI=http://localhost:8040/realms/c-corp/protocol/openid-connect/certs
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    depends_on:
+      - text-message-backend-postgres
+      - keycloak
+
+  text-message-backend-postgres:
+    image: postgres:17@sha256:30a72339ce74f2621f0f82cd983a11ade307ec2e634a7998318e8813a6f6f25c
+    volumes:
+      - text-message-backend-postgres-volume:/var/lib/postgresql/data
+    ports:
+      - "5400:5432"
+    environment:
+      POSTGRES_DB: text-message-backend
+      POSTGRES_USER: text-message-backend
+      POSTGRES_PASSWORD: password
+
+  # Account Info DB Setup
+  account-info-backend-postgres:
+    image: postgres:17@sha256:30a72339ce74f2621f0f82cd983a11ade307ec2e634a7998318e8813a6f6f25c
+    volumes:
+      - account-info-backend-postgres-volume:/var/lib/postgresql/data
+    ports:
+      - "5401:5432"
+    environment:
+      POSTGRES_DB: account-info-backend
+      POSTGRES_USER: account-info-backend
+      POSTGRES_PASSWORD: password
+
+  # Super Secret Backend Setup
+  super-secret-backend:
+    build:
+      context: ./super-secret-backend
+    ports:
+      - "8090:8090"
+    environment:
+      - PORT=8090
+      - NODE_ENV=production
+      - KEYCLOAK_URL=http://localhost:8040
+      - KEYCLOAK_REALM=c-corp
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    depends_on:
+      - keycloak

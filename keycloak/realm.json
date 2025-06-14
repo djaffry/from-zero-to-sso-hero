@@ -1,0 +1,98 @@
+{
+  "realm": "c-corp",
+  "enabled": true,
+  "displayName": "C-Corp Realm",
+  "displayNameHtml": "<div class=\"kc-logo-text\"><span>C-Corp</span></div>",
+  "roles": {
+    "client": {
+      "message-service": [
+        {
+          "name": "VIEW_TEXT_MESSAGES",
+          "description": "Permission to view text messages"
+        },
+        {
+          "name": "EDIT_TEXT_MESSAGES",
+          "description": "Permission to edit text messages"
+        }
+      ]
+    }
+  },
+  "clients": [
+    {
+      "clientId": "message-service",
+      "enabled": true,
+      "redirectUris": [
+        "http://localhost:8070/*"
+      ],
+      "webOrigins": [
+        "http://localhost:8070"
+      ],
+      "publicClient": true,
+      "protocol": "openid-connect",
+      "directAccessGrantsEnabled": false,
+      "standardFlowEnabled": true,
+      "implicitFlowEnabled": false,
+      "attributes": {
+        "pkce.code.challenge.method": "S256"
+      }
+    }
+  ],
+  "users": [
+    {
+      "username": "user",
+      "enabled": true,
+      "emailVerified": true,
+      "firstName": "Test",
+      "lastName": "User",
+      "email": "user@c-corp.com",
+      "credentials": [
+        {
+          "type": "password",
+          "value": "password",
+          "temporary": false
+        }
+      ],
+      "clientRoles": {
+        "message-service": [
+          "VIEW_TEXT_MESSAGES"
+        ]
+      }
+    },
+    {
+      "username": "admin",
+      "enabled": true,
+      "emailVerified": true,
+      "firstName": "Admin",
+      "lastName": "User",
+      "email": "admin@c-corp.com",
+      "credentials": [
+        {
+          "type": "password",
+          "value": "password",
+          "temporary": false
+        }
+      ],
+      "clientRoles": {
+        "message-service": [
+          "VIEW_TEXT_MESSAGES",
+          "EDIT_TEXT_MESSAGES"
+        ]
+      }
+    },
+    {
+      "username": "intern",
+      "enabled": true,
+      "emailVerified": true,
+      "firstName": "Intern",
+      "lastName": "User",
+      "email": "intern@c-corp.com",
+      "credentials": [
+        {
+          "type": "password",
+          "value": "password",
+          "temporary": false
+        }
+      ]
+    }
+  ]
+}

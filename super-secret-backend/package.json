@@ -1,0 +1,29 @@
+{
+  "name": "datacore-poc",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node dist/index.js",
+    "dev": "npx ts-node src/index.ts",
+    "build": "npx tsc && node src/obfuscate.js",
+    "build:no-obfuscate": "npx tsc"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^16.5.0",
+    "express": "5.1.0",
+    "express-jwt": "^8.5.1",
+    "jsonwebtoken": "^9.0.2",
+    "jwks-rsa": "^3.2.0",
+    "ts-node": "10.9.2",
+    "typescript": "5.8.3"
+  },
+  "devDependencies": {
+    "@types/express": "5.0.3",
+    "@types/node": "24.0.1",
+    "javascript-obfuscator": "^4.1.1"
+  }
+}
