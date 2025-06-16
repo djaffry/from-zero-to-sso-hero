@@ -20,6 +20,11 @@ spring:
   liquibase:
     change-log: classpath:domain/changelog-master.yml
     drop-first: false
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          jwk-set-uri: http://localhost:8040/realms/c-corp/protocol/openid-connect/certs
 error:
   handling:
     http-status-in-json-response: true
