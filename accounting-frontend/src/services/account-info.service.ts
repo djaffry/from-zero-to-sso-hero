@@ -3,7 +3,7 @@ import {oidcService} from '../auth/oidc.service';
 
 export interface AccountInfo {
   id?: string;
-  message: string;
+  accountEntry: string;
 }
 
 export interface PaginatedResponse<T> {
@@ -41,7 +41,7 @@ class AccountInfoService {
     }
   }
 
-  async createAccountInfo(message: string): Promise<string> {
+  async createAccountInfo(accountEntry: string): Promise<string> {
     const sessionInfo = oidcService.getSessionInfo();
     if (!sessionInfo) {
       throw new Error('User not authenticated');
@@ -50,7 +50,7 @@ class AccountInfoService {
     try {
       const response = await axios.post(
         this.apiUrl,
-        { message },
+        { accountEntry: accountEntry },
         {
           headers: {
             Authorization: `Bearer ${sessionInfo.tokens.access}`
@@ -59,7 +59,7 @@ class AccountInfoService {
       );
       return response.data;
     } catch (error) {
-      console.error('Error creating text message:', error);
+      console.error('Error creating accountEntry:', error);
       throw error;
     }
   }

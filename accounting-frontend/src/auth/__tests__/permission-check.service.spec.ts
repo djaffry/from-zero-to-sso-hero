@@ -19,7 +19,7 @@ describe('PermissionCheckService', () => {
   });
 
   describe('hasViewAccountInfoPermission', () => {
-    it('should return true when user has VIEW_TEXT_MESSAGES permission', () => {
+    it('should return true when user has VIEW permission', () => {
       // Arrange
       mockGetSessionInfoSync.mockReturnValue({
         user: {
@@ -35,7 +35,7 @@ describe('PermissionCheckService', () => {
       expect(mockGetSessionInfoSync).toHaveBeenCalledTimes(1);
     });
 
-    it('should return false when user does not have VIEW_TEXT_MESSAGES permission', () => {
+    it('should return false when user does not have VIEW permission', () => {
       // Arrange
       mockGetSessionInfoSync.mockReturnValue({
         user: {
@@ -81,7 +81,7 @@ describe('PermissionCheckService', () => {
   });
 
   describe('hasEditAccountInfoPermission', () => {
-    it('should return true when user has EDIT_TEXT_MESSAGES permission', () => {
+    it('should return true when user has EDIT permission', () => {
       // Arrange
       mockGetSessionInfoSync.mockReturnValue({
         user: {
@@ -97,7 +97,7 @@ describe('PermissionCheckService', () => {
       expect(mockGetSessionInfoSync).toHaveBeenCalledTimes(1);
     });
 
-    it('should return false when user does not have EDIT_TEXT_MESSAGES permission', () => {
+    it('should return false when user does not have EDIT permission', () => {
       // Arrange
       mockGetSessionInfoSync.mockReturnValue({
         user: {

@@ -2,6 +2,7 @@ import {afterEach, beforeEach, describe, expect, it, vi} from 'vitest';
 import {oidcService} from '../oidc.service';
 import * as oauth from 'oauth4webapi';
 import * as sessionInfoMapper from '../session-info.mapper';
+import {Permission} from "@/auth/permission.ts";
 
 vi.mock('../pkce-state.store', () => ({
   PkceStateStore: vi.fn(() => ({
@@ -58,7 +59,7 @@ vi.mock('../session-info.mapper', () => ({
       firstName: 'Test',
       username: 'testuser',
       email: 'test@example.com',
-      roles: ['VIEW_TEXT_MESSAGES', 'EDIT_TEXT_MESSAGES'],
+      roles: [Permission.VIEW_ACCOUNT_INFO, Permission.EDIT_ACCOUNT_INFO],
       padIntern: 123
     }
   }))

@@ -78,13 +78,13 @@ describe('AccountInfoView', () => {
     expect(wrapper.find('.login-prompt').exists()).toBe(false);
   });
 
-  it('should show messages but not the form when user has view permission but not edit permission', async () => {
+  it('should show entries but not the form when user has view permission but not edit permission', async () => {
     // Arrange
     vi.mocked(oidcService.userIsLoggedIn).mockReturnValue(true);
     vi.mocked(permissionCheckService.hasViewAccountInfoPermission).mockReturnValue(true);
     vi.mocked(permissionCheckService.hasEditAccountInfoPermission).mockReturnValue(false);
     vi.mocked(accountInfoService.getAllAccountInfos).mockResolvedValue({
-      content: [{ id: '1', message: 'Test message' }],
+      content: [{ id: '1', accountEntry: 'Test message' }],
       totalElements: 1,
       totalPages: 1,
       size: 10,
@@ -110,7 +110,7 @@ describe('AccountInfoView', () => {
     vi.mocked(permissionCheckService.hasViewAccountInfoPermission).mockReturnValue(true);
     vi.mocked(permissionCheckService.hasEditAccountInfoPermission).mockReturnValue(true);
     vi.mocked(accountInfoService.getAllAccountInfos).mockResolvedValue({
-      content: [{ id: '1', message: 'Test message' }],
+      content: [{ id: '1', accountEntry: 'Test message' }],
       totalElements: 1,
       totalPages: 1,
       size: 10,

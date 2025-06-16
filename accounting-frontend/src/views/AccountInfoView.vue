@@ -5,11 +5,11 @@
     <div v-if="isLoggedIn && hasViewPermission">
       <div class="new-message-form" v-if="hasEditPermission">
         <input
-          v-model="newMessage"
-          placeholder="Enter a new message"
-          @keyup.enter="createMessage"
+          v-model="newAccountEntry"
+          placeholder="Enter a new Account Entry"
+          @keyup.enter="createAccountEntry"
         />
-        <button @click="createMessage" :disabled="!newMessage.trim() || isCreating">
+        <button @click="createAccountEntry" :disabled="!newAccountEntry.trim() || isCreating">
           {{ isCreating ? 'Sending...' : 'Send' }}
         </button>
       </div>
@@ -25,12 +25,12 @@
         <div v-else-if="error" class="error">
           {{ error }}
         </div>
-        <div v-else-if="messages.length === 0" class="no-messages">
-          No messages found. {{ hasEditPermission ? 'Create one above!' : '' }}
+        <div v-else-if="accountEntries.length === 0" class="no-messages">
+          No Account Entries found. {{ hasEditPermission ? 'Create one above!' : '' }}
         </div>
         <div v-else class="messages-list">
-          <div v-for="message in messages" :key="message.id" class="message-card">
-            <p>{{ message.message }}</p>
+          <div v-for="accountEntry in accountEntries" :key="accountEntry.id" class="message-card">
+            <p>{{ accountEntry.accountEntry }}</p>
           </div>
 
           <div class="pagination" v-if="totalPages > 1">
@@ -72,10 +72,10 @@ import {
 import {oidcService} from '../auth/oidc.service';
 import {permissionCheckService} from '../auth/permission-check.service';
 
-const messages = ref<AccountInfo[]>([]);
+const accountEntries = ref<AccountInfo[]>([]);
 const isLoading = ref(false);
 const error = ref<string | null>(null);
-const newMessage = ref('');
+const newAccountEntry = ref('');
 const isCreating = ref(false);
 const currentPage = ref(0);
 const totalPages = ref(0);
@@ -85,7 +85,7 @@ const isLoggedIn = computed(() => oidcService.userIsLoggedIn());
 const hasViewPermission = computed(() => permissionCheckService.hasViewAccountInfoPermission());
 const hasEditPermission = computed(() => permissionCheckService.hasEditAccountInfoPermission());
 
-const fetchMessages = async () => {
+const fetchAccountEntries = async () => {
   if (!isLoggedIn.value) return;
 
   isLoading.value = true;
@@ -96,7 +96,7 @@ const fetchMessages = async () => {
       currentPage.value,
       pageSize
     );
-    messages.value = response.content;
+    accountEntries.value = response.content;
     totalPages.value = response.totalPages;
   } catch (err) {
     console.error('Failed to fetch messages:', err);
@@ -106,15 +106,15 @@ const fetchMessages = async () => {
   }
 };
 
-const createMessage = async () => {
-  if (!newMessage.value.trim() || isCreating.value) return;
+const createAccountEntry = async () => {
+  if (!newAccountEntry.value.trim() || isCreating.value) return;
 
   isCreating.value = true;
 
   try {
-    await accountInfoService.createAccountInfo(newMessage.value);
-    newMessage.value = '';
-    await fetchMessages();
+    await accountInfoService.createAccountInfo(newAccountEntry.value);
+    newAccountEntry.value = '';
+    await fetchAccountEntries();
   } catch (err) {
     console.error('Failed to create message:', err);
     error.value = 'Failed to create message. Please try again later.';
@@ -125,12 +125,12 @@ const createMessage = async () => {
 
 const changePage = (page: number) => {
   currentPage.value = page;
-  fetchMessages();
+  fetchAccountEntries();
 };
 
 onMounted(() => {
   if (isLoggedIn.value) {
-    fetchMessages();
+    fetchAccountEntries();
   }
 });
 </script>

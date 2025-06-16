@@ -2,6 +2,7 @@ import {afterEach, beforeEach, describe, expect, it, vi} from 'vitest';
 import axios from 'axios';
 import {oidcService} from '@/auth/oidc.service.ts';
 import {accountInfoService} from "@/services/account-info.service.ts";
+import {Permission} from "@/auth/permission.ts";
 
 vi.mock('axios');
 vi.mock('../../auth/oidc.service', () => ({
@@ -24,15 +25,15 @@ describe('AccountInfoService', () => {
       firstName: 'Test',
       username: 'testuser',
       email: 'test@example.com',
-      roles: ['VIEW_TEXT_MESSAGES', 'EDIT_TEXT_MESSAGES'],
+      roles: [Permission.VIEW_ACCOUNT_INFO, Permission.EDIT_ACCOUNT_INFO],
       padIntern: 123
     }
   };
 
   const mockAccountInfos = {
     content: [
-      { id: '1', message: 'Test message 1' },
-      { id: '2', message: 'Test message 2' }
+      { id: '1', accountEntry: 'Test message 1' },
+      { id: '2', accountEntry: 'Test message 2' }
     ],
     totalElements: 2,
     totalPages: 1,
@@ -130,7 +131,7 @@ describe('AccountInfoService', () => {
       // Assert
       expect(axios.post).toHaveBeenCalledWith(
         'http://localhost:8050/api/accountinfos',
-        { message: 'New message' },
+        { accountEntry: 'New message' },
         {
           headers: { Authorization: 'Bearer mock-access-token' }
         }
@@ -146,7 +147,7 @@ describe('AccountInfoService', () => {
       expect(axios.post).not.toHaveBeenCalled();
     });
 
-    it('should return the created message ID', async () => {
+    it('should return the created accountEntry ID', async () => {
       // Arrange
       vi.mocked(oidcService.getSessionInfo).mockReturnValue(mockSessionInfo);
 
