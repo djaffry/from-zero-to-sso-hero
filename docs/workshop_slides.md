@@ -77,20 +77,10 @@ This workshop will:
 ## OIDC (OpenID Connect)
 ・ Identity layer built on OAuth 2.0  
 ・ Adds authentication & user profile info  
-・ Introduces the **ID Token**  
-・ Enables Single Sign-On (SSO)
+・ Introduces the **ID Token**
 
 ![bg right:40% 60%](https://upload.wikimedia.org/wikipedia/commons/d/d2/Oauth_logo.svg)
 ![bg right:40% 50%](https://avatars.githubusercontent.com/u/71971?s=200&v=4)
-
----
-
-# [INTERACTIVE MOMENT]
-## JWT Live Demo
-
-Let's paste a token into [jwt.io](https://jwt.io/)
-- What info can you see?
-- What can't you change?
 
 ---
 
@@ -105,7 +95,7 @@ JSON Web Token (JWT) consists of 3 parts:
 
 **Why secure?**
 - Signed using a secret key from IDP
-- Can be verified by the client without contacting the IDP using the IDPs JSON Web Key Set (JWKS) public keys 
+- Once the JSON Web Key Set (JWKS) public keys are fetched, the JWT can be verified by the client without contacting the IDP
 - Tamper evident due to signature
 
 ---
@@ -119,7 +109,7 @@ JSON Web Token (JWT) consists of 3 parts:
   Social login, Multifactor authentication,
   Fine grained authorization, Admin console,
   REST API, ...
-- in OIDC: Keycloak is an identity provider (IDP), which provides user authentication functions to other apps called relying parties (RP)
+- in OIDC: Keycloak is an IDP, which provides user authentication functions to other apps called relying parties (clients)
 
 ---
 
@@ -128,7 +118,7 @@ JSON Web Token (JWT) consists of 3 parts:
 - 🌌 **Realm**: A security domain (isolated user base)
 - 📲 **Client**: An application that uses Keycloak for auth
 - 🔐 **Client Roles**: Permissions specific to an application
-- 🧑 **Users**: People and other Entities that can authenticate
+- 🧑 **Users**: People and other Accounts that can authenticate
 - 👭 **Groups**: Collections of users
 - 🌍 **Identity Providers**: External auth sources (Google, Facebook)
 
@@ -147,18 +137,6 @@ JSON Web Token (JWT) consists of 3 parts:
 ---
 
 [![bg 75%](https://mermaid.ink/img/pako:eNp1VE1P3DAQ_SuWDxUVNN-bbHJAonxUCFVCRb1UuZhkklgkdmo70GW1_71jZ1nYBfawiifz3sx7M_GaVrIGWlANfycQFVxw1io2lILgz3DTAzmbTCcVf2aGS0HOMZ9c9fKJPHHTkdub88s5eWTK8IqPTBjyW4N6Hz0bR8I0uVJSGBD1BwlY6Q7UIyibd31x69_Aquole3if-wu0nFQFr_n7Ef87qx5clRmLxb-dnuJ_QUKP_AABihlw_RPrAUEMbzhSfSFVx_oeRAt70F1zBYm8A1ccg7IeakNKhB3PoR0TOfLZFgFft7Q7QmS3jhUk9siLYjIq0CCMJhaHD7yaS41KDqOZKSzqoLVkbu0NgIkamxGW7IPCzpHFJ3r0aHGfuZB65A4dJuw99PjA0yPfSJzGR8rfMmaW0c0THlk_4YD064Q-a36JzVcVaO2UXl8QV0qTIznahnAAK5TSoJqO7HXhBO1vTUFyDxdpnqPavtLzqrO5iKOYGfaxu_UKLMVs3YzcEZWCntBW8ZoWRk1wQgdQA7NHuraUJcXJDVDSAh9raNjUm5KWYoMw3Po_Ug4vSCWntqNFw3qNp2ms0aztx3sQvay5kWoXxGnJu5WoXohw2WrA12tqVqO9ClquDdbDlWl4a-OT6jHcGTPqwvfta69FWdO9V8nB17zu8LvsHvPUT6N0yaIY0ixmiziuq_swXzZREjZ1FoQRo5sNdo47A-pcTsLQIgsCJ83W-YfH3IvSIMvjeJlkaZ4vTuiKFkm49JZREkdhkC_yJI8SpHl2ZgReHi5SzMyyNE3yJEMEOME_54vN3W-b_2PLpWc?type=png)](https://mermaid.live/edit#pako:eNp1VE1P3DAQ_SuWDxUVNN-bbHJAonxUCFVCRb1UuZhkklgkdmo70GW1_71jZ1nYBfawiifz3sx7M_GaVrIGWlANfycQFVxw1io2lILgz3DTAzmbTCcVf2aGS0HOMZ9c9fKJPHHTkdub88s5eWTK8IqPTBjyW4N6Hz0bR8I0uVJSGBD1BwlY6Q7UIyibd31x69_Aquole3if-wu0nFQFr_n7Ef87qx5clRmLxb-dnuJ_QUKP_AABihlw_RPrAUEMbzhSfSFVx_oeRAt70F1zBYm8A1ccg7IeakNKhB3PoR0TOfLZFgFft7Q7QmS3jhUk9siLYjIq0CCMJhaHD7yaS41KDqOZKSzqoLVkbu0NgIkamxGW7IPCzpHFJ3r0aHGfuZB65A4dJuw99PjA0yPfSJzGR8rfMmaW0c0THlk_4YD064Q-a36JzVcVaO2UXl8QV0qTIznahnAAK5TSoJqO7HXhBO1vTUFyDxdpnqPavtLzqrO5iKOYGfaxu_UKLMVs3YzcEZWCntBW8ZoWRk1wQgdQA7NHuraUJcXJDVDSAh9raNjUm5KWYoMw3Po_Ug4vSCWntqNFw3qNp2ms0aztx3sQvay5kWoXxGnJu5WoXohw2WrA12tqVqO9ClquDdbDlWl4a-OT6jHcGTPqwvfta69FWdO9V8nB17zu8LvsHvPUT6N0yaIY0ixmiziuq_swXzZREjZ1FoQRo5sNdo47A-pcTsLQIgsCJ83W-YfH3IvSIMvjeJlkaZ4vTuiKFkm49JZREkdhkC_yJI8SpHl2ZgReHi5SzMyyNE3yJEMEOME_54vN3W-b_2PLpWc)
-
----
-
-# [INTERACTIVE MOMENT]
-## Authorization Code Flow Roleplay
-
-*Assign participants*:  
-- User  
-- Frontend  
-- Keycloak  
-- Backend  
-And walk through the sequence!
 
 ---
 
@@ -184,17 +162,6 @@ And walk through the sequence!
 
 ---
 
-# [INTERACTIVE MOMENT]
-## Repository Overview
-
-*Walkthrough*:  
-- Repository Structure
-- Show `readme.md` and `docs`
-- Docker Compose Setup and started Containers
-- Accounting Backend and Frontend are missing Implementations, look for `TODO`s
-
----
-
 # Implementation Approaches
 
 ### ✅ Best Practice
@@ -210,17 +177,13 @@ And walk through the sequence!
 
 ---
 
-# Endpoint Security vs. Method Security
+## Repository Overview
 
-**Endpoint Security**
-- Secures entire API endpoints
-- Coarse grained control
-- Implemented at the web layer
-
-**Method Security**
-- Secures individual service methods
-- Additional control
-- Implemented at the service layer
+*Walkthrough*:
+- Repository Structure
+- Show `readme.md` and `docs`
+- Docker Compose Setup and started Containers
+- Accounting Backend and Frontend are missing Implementations, look for `TODO`s
 
 ---
 
@@ -323,3 +286,17 @@ Complete the accounting service implementation:
 - Configure proper issuer URL in Keycloak
 - Use consistent naming across environments
 - Configure token verification to handle different issuer URLs
+
+---
+
+# Endpoint Security vs. Method Security
+
+**Endpoint Security**
+- Secures entire API endpoints
+- Coarse grained control
+- Implemented at the web layer
+
+**Method Security**
+- Secures individual service methods
+- Additional control
+- Implemented at the service layer
